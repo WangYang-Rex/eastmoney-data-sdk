@@ -1,0 +1,30 @@
+# 依赖目录
+node_modules/
+
+# 构建输出（但发布时需要包含）
+# dist/
+
+# 测试目录
+test/
+
+# 日志文件
+*.log
+npm-debug.log*
+
+# 编辑器配置
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 原始设计文档
+eastmoney.md

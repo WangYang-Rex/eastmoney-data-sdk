@@ -1,14 +1,23 @@
 {
   "name": "eastmoney-data-sdk",
   "version": "1.0.0",
+  "author": "Wang Yang",
   "description": "东方财富数据 SDK - 获取 A 股历史 K 线、实时行情、分时线等数据",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "test": "tsx test/index.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "publish": "npm publish"
   },
   "keywords": [
     "eastmoney",
@@ -17,10 +26,20 @@
     "kline",
     "a-stock",
     "finance",
-    "trading"
+    "trading",
+    "量化",
+    "东方财富",
+    "股票"
   ],
-  "author": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WangYang-Rex/eastmoney-data-sdk"
+  },
+  "homepage": "https://github.com/WangYang-Rex/eastmoney-data-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/WangYang-Rex/eastmoney-data-sdk/issues"
+  },
   "dependencies": {
     "axios": "^1.6.0"
   },
