@@ -1,0 +1,39 @@
+{
+  "name": "eastmoney-data-sdk",
+  "version": "1.0.0",
+  "description": "东方财富数据 SDK - 获取 A 股历史 K 线、实时行情、分时线等数据",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "tsx test/index.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "eastmoney",
+    "stock",
+    "quant",
+    "kline",
+    "a-stock",
+    "finance",
+    "trading"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
