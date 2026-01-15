@@ -1,4 +1,4 @@
-import { EastmoneyClient, buildSecid } from 'eastmoney-data-sdk';
+import { EastmoneyClient, buildSecid } from '../src';
 
 /**
  * Eastmoney Data SDK - 测试脚本
@@ -10,7 +10,7 @@ async function main() {
   const client = new EastmoneyClient();
 
   const code = '588080';
-  const secid = '1.588080'; // buildSecid(code);
+  const secid = buildSecid(code); // '1.588080'
   // 测试构建 secid
   console.log('📌 测试构建 secid:');
   console.log(`  ${code} => ${secid}`);

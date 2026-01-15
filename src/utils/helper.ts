@@ -12,30 +12,77 @@ import { MarketType } from '../types';
  * @returns 市场类型
  */
 export function detectMarket(code: string): MarketType {
-  const prefix = code.substring(0, 3);
-  const firstDigit = code.charAt(0);
-
-  // 上海证券交易所
-  // 60x: 主板
-  // 688: 科创板
-  // 900: B股
-  if (prefix.startsWith('60') || prefix.startsWith('68') || prefix.startsWith('9')) {
-    return 'SH';
+  if (!code || code.length < 5) {
+    throw new Error(`Invalid stock code: ${code}`);
   }
 
-  // 北京证券交易所
-  // 8: 北交所
-  // 43: 新三板
-  if (firstDigit === '8' || prefix.startsWith('43')) {
+  const prefix3 = code.slice(0, 3);
+  const prefix2 = code.slice(0, 2);
+  const firstDigit = code.charAt(0);
+
+  /** ---------- 北京证券交易所 ---------- */
+  // 8xxxxxx: 北交所
+  // 43xxxx: 新三板
+  if (firstDigit === '8' || prefix2 === '43') {
     return 'BJ';
   }
 
-  // 深圳证券交易所
-  // 00x: 主板
-  // 30x: 创业板
-  // 200: B股
+  /** ---------- 上海证券交易所 ---------- */
+  // 股票
+  if (
+    prefix3 === '600' ||
+    prefix3 === '601' ||
+    prefix3 === '603' ||
+    prefix3 === '605' ||
+    prefix3 === '688' ||
+    prefix3 === '900'
+  ) {
+    return 'SH';
+  }
+
+  // ETF / LOF（沪市）
+  if (
+    prefix3 === '510' || // ETF
+    prefix3 === '511' || // 债券 ETF
+    prefix3 === '512' ||
+    prefix3 === '513' ||
+    prefix3 === '515' ||
+    prefix3 === '516' ||
+    prefix3 === '518' ||
+    prefix3 === '588' || // 科创 ETF
+    prefix3 === '589' ||
+    prefix3 === '501'    // LOF
+  ) {
+    return 'SH';
+  }
+
+  /** ---------- 深圳证券交易所 ---------- */
+  // 股票
+  if (
+    prefix3 === '000' ||
+    prefix3 === '001' ||
+    prefix3 === '002' ||
+    prefix3 === '300' ||
+    prefix3 === '200'
+  ) {
+    return 'SZ';
+  }
+
+  // ETF / LOF（深市）
+  if (
+    prefix3 === '159' || // ETF
+    prefix3 === '160' || // ETF / 分级基金
+    prefix3 === '161' ||
+    prefix3 === '162'
+  ) {
+    return 'SZ';
+  }
+
+  /** ---------- 默认兜底 ---------- */
+  // 大部分未知代码默认深市（符合东财 & 交易所习惯）
   return 'SZ';
 }
+
 
 /**
  * 构建 secid（证券 ID）
