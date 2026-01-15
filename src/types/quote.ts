@@ -57,7 +57,9 @@ export interface QuoteOptions {
  * 分时线数据结构
  */
 export interface TrendData {
-  /** 时间（HH:mm 格式） */
+  /** 完整日期时间（YYYY-MM-DD HH:mm 格式） */
+  datetime: string;
+  /** 时间（HH:mm 格式，兼容旧版） */
   time: string;
   /** 当前价格 */
   price: number;

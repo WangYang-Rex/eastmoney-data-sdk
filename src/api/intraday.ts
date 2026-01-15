@@ -43,9 +43,14 @@ export async function getTrend(options: TrendOptions): Promise<TrendResult | nul
     _: Date.now()
   };
 
+  // 根据 ndays 选择 API 端点
+  // ndays = 1: 使用实时端点（push2）获取当日分时
+  // ndays > 1: 使用历史端点（push2his）获取多日分时
+  const apiUrl = ndays > 1 ? EASTMONEY_BASE.TRENDS_HISTORY : EASTMONEY_BASE.TRENDS;
+
   try {
     const res = await withRetry(
-      () => http.get<{ data: TrendApiResponse }>(EASTMONEY_BASE.TRENDS, { params }),
+      () => http.get<{ data: TrendApiResponse }>(apiUrl, { params }),
       2,
       500
     );
@@ -57,8 +62,8 @@ export async function getTrend(options: TrendOptions): Promise<TrendResult | nul
       return null;
     }
 
-    // 解析昨收价
-    const preClose = Number(data.preClose) / 100 || 0;
+    // 解析昨收价（实时端点返回原值，历史端点可能需要调整）
+    const preClose = Number(data.preClose) || 0;
 
     return {
       code: data.code,

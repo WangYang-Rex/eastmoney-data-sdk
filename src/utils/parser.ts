@@ -117,7 +117,7 @@ export function parseTrends(trends: string[], preClose: number = 0): TrendData[]
 
     const [datetime, price, avgPrice, volume, amount] = parts;
 
-    // 提取时间部分（去掉日期）
+    // 提取时间部分（保留日期时间兼容性）
     const timePart = datetime.includes(' ')
       ? datetime.split(' ')[1]
       : datetime;
@@ -125,7 +125,8 @@ export function parseTrends(trends: string[], preClose: number = 0): TrendData[]
     const priceNum = parseFloat(price) || 0;
 
     return {
-      time: timePart,
+      datetime,  // 完整日期时间
+      time: timePart,  // 仅时间部分（兼容旧版）
       price: priceNum,
       avgPrice: parseFloat(avgPrice) || 0,
       volume: parseFloat(volume) || 0,

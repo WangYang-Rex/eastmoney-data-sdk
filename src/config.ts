@@ -16,8 +16,11 @@ export const EASTMONEY_BASE = {
   /** 实时行情 API */
   QUOTE: "https://push2.eastmoney.com/api/qt/stock/get",
 
-  /** 分时线 API（当日分时） */
+  /** 分时线 API（当日分时 - 实时） */
   TRENDS: "https://push2.eastmoney.com/api/qt/stock/trends2/get",
+
+  /** 分时线 API（多日分时 - 历史） */
+  TRENDS_HISTORY: "https://push2his.eastmoney.com/api/qt/stock/trends2/get",
 
   /** 分钟线 API（历史分钟 K 线） */
   MINUTE: "https://push2his.eastmoney.com/api/qt/stock/kline/get",
