@@ -221,3 +221,49 @@ export async function batchProcess<T, R>(
 
   return results;
 }
+
+/**
+ * 格式化 Unix 时间戳为可读字符串
+ * 
+ * @param timestamp - Unix 时间戳（秒级）
+ * @param format - 格式类型，'datetime' 或 'date'
+ * @returns 格式化后的时间字符串
+ * 
+ * @example
+ * ```ts
+ * formatTimestamp(1768810299);              // => '2026-01-19 16:11:39'
+ * formatTimestamp(1768810299, 'date');      // => '2026-01-19'
+ * formatTimestamp(1768810299, 'datetime');  // => '2026-01-19 16:11:39'
+ * ```
+ */
+export function formatTimestamp(timestamp: number, format: 'datetime' | 'date' = 'datetime'): string {
+  if (!timestamp || timestamp <= 0) {
+    return '';
+  }
+
+  const date = new Date(timestamp * 1000); // 转换为毫秒
+  
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  
+  if (format === 'date') {
+    return `${year}-${month}-${day}`;
+  }
+  
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+/**
+ * 将 Unix 时间戳转换为 Date 对象
+ * 
+ * @param timestamp - Unix 时间戳（秒级）
+ * @returns Date 对象
+ */
+export function timestampToDate(timestamp: number): Date {
+  return new Date(timestamp * 1000);
+}

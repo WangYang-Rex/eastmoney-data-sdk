@@ -88,15 +88,28 @@ export function parseQuote(data: Record<string, unknown>): Quote | null {
     floatMarketCap: Number(data.f117) || 0, // 流通市值
     pe: Number(data.f162) || 0,             // 市盈率
     pb: Number(data.f167) || 0,             // 市净率
-    updateTime: String(data.f86 || '')      // 更新时间戳
+    updateTime: Number(data.f86) || 0       // 更新时间戳（Unix 时间戳，秒级）
   };
 }
 
 /**
  * 解析分时线数据
  * 
- * 原始格式：时间,价格,均价,成交量,成交额,涨跌幅
- * 示例：2024-01-15 09:30,1835.00,1835.00,12345,23456789,0.00
+ * 原始格式：时间,价格,均价,最高,最低,成交量,成交额,其他
+ * 示例：2026-01-19 09:30,1.540,1.540,1.540,1.540,51559,7940092.000,1.5400
+ * 
+ * 字段说明：
+ * [0] datetime  - 日期时间（YYYY-MM-DD HH:mm）
+ * [1] price     - 当前价格（历史数据中可能为 0）
+ * [2] avgPrice  - 均价
+ * [3] high      - 分时最高价
+ * [4] low       - 分时最低价
+ * [5] volume    - 成交量（股）
+ * [6] amount    - 成交额（元）
+ * [7] extra     - 其他数据（可能是涨跌幅等）
+ * 
+ * 注意：在 5 日分时等历史数据中，price 字段可能为 0，
+ * 这种情况下应使用 avgPrice 作为价格
  * 
  * @param trends - 原始分时数据字符串数组
  * @param preClose - 昨收价（用于计算涨跌幅）
@@ -110,12 +123,13 @@ export function parseTrends(trends: string[], preClose: number = 0): TrendData[]
   return trends.map(line => {
     const parts = line.split(',');
 
-    if (parts.length < 3) {
+    if (parts.length < 7) {
       console.warn(`[Eastmoney SDK] Invalid trend data: ${line}`);
       return null;
     }
 
-    const [datetime, price, avgPrice, volume, amount] = parts;
+    // 正确的字段顺序：datetime, price, avgPrice, high, low, volume, amount, [extra]
+    const [datetime, price, avgPrice, high, low, volume, amount] = parts;
 
     // 提取时间部分（保留日期时间兼容性）
     const timePart = datetime.includes(' ')
@@ -123,15 +137,19 @@ export function parseTrends(trends: string[], preClose: number = 0): TrendData[]
       : datetime;
 
     const priceNum = parseFloat(price) || 0;
+    const avgPriceNum = parseFloat(avgPrice) || 0;
+    
+    // 在历史分时数据中，price 可能为 0，此时使用 avgPrice
+    const actualPrice = priceNum > 0 ? priceNum : avgPriceNum;
 
     return {
       datetime,  // 完整日期时间
       time: timePart,  // 仅时间部分（兼容旧版）
-      price: priceNum,
-      avgPrice: parseFloat(avgPrice) || 0,
+      price: actualPrice,
+      avgPrice: avgPriceNum,
       volume: parseFloat(volume) || 0,
       amount: parseFloat(amount) || 0,
-      pct: preClose ? ((priceNum - preClose) / preClose) * 100 : 0
+      pct: preClose ? ((actualPrice - preClose) / preClose) * 100 : 0
     };
   }).filter((item): item is TrendData => item !== null);
 }

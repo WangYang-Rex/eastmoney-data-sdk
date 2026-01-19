@@ -38,8 +38,8 @@ export interface Quote {
   pe: number;
   /** 市净率 */
   pb: number;
-  /** 更新时间戳 */
-  updateTime: string;
+  /** 更新时间戳（Unix 时间戳，秒级） */
+  updateTime: number;
 }
 
 /**

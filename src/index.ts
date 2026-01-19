@@ -83,7 +83,9 @@ export {
   isTradingDay,
   isTradingTime,
   sleep,
-  batchProcess
+  batchProcess,
+  formatTimestamp,
+  timestampToDate
 } from './utils';
 
 // ==================== 导出股票列表类型 ====================

@@ -35,14 +35,27 @@ async function main() {
   console.log();
 
   // 测试获取分时数据
-  console.log('📊 测试获取5日分时数据...');
+  console.log('📊 测试获取分时数据...');
   try {
     const intradayTrend = await client.intradayTrend(secid);
-    console.log(`  获取到 ${intradayTrend.length} 条数据:`);
+    console.log(`  当日分时: 获取到 ${intradayTrend.length} 条数据`);
+    if (intradayTrend.length > 0) {
+      console.log('  前3条数据示例:');
+      intradayTrend.slice(0, 3).forEach((item) => {
+        console.log(`    ${item.datetime} | 价格:${item.price} 均价:${item.avgPrice} | 量:${item.volume} 额:${item.amount} | 涨跌:${item.pct.toFixed(2)}%`);
+      });
+    }
+    
     const fiveDayTrend = await client.fiveDayTrend(secid);
-    console.log(`  获取到 ${fiveDayTrend.length} 条数据:`);
+    console.log(`  5日分时: 获取到 ${fiveDayTrend.length} 条数据`);
+    if (fiveDayTrend.length > 0) {
+      console.log('  前3条数据示例:');
+      fiveDayTrend.slice(0, 3).forEach((item) => {
+        console.log(`    ${item.datetime} | 价格:${item.price} 均价:${item.avgPrice} | 量:${item.volume} 额:${item.amount} | 涨跌:${item.pct.toFixed(2)}%`);
+      });
+    }
   } catch (error) {
-    console.error('  获取日线数据失败:', error);
+    console.error('  获取分时数据失败:', error);
   }
   console.log();
 
