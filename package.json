@@ -1,6 +1,6 @@
 {
   "name": "eastmoney-data-sdk",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Wang Yang",
   "description": "东方财富数据 SDK - 获取 A 股历史 K 线、实时行情、分时线等数据",
   "main": "dist/index.js",

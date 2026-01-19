@@ -144,7 +144,7 @@ export function parseTrends(trends: string[], preClose: number = 0): TrendData[]
 
     return {
       datetime,  // 完整日期时间
-      time: timePart,  // 仅时间部分（兼容旧版）
+      // time: timePart,  // 仅时间部分（兼容旧版）
       price: actualPrice,
       avgPrice: avgPriceNum,
       volume: parseFloat(volume) || 0,

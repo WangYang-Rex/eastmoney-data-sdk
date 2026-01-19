@@ -19,6 +19,8 @@ export interface StockListItem {
   name: string;
   /** 市场代码 */
   market: number;
+  /** 市场类型 */
+  marketType: string;
   /** 最新价 */
   price: number;
   /** 涨跌幅 */
